@@ -60,22 +60,23 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
+    //Method to Stop Location updates
     private fun stopLocationUpdates() {
         locationManager.removeUpdates(locationListener)
         locationListener = null
+
     }
 
+    //Variable to store the last location
     private var lastLocation: Location? = null
 
+    //Method to update the location in the database
+    //This method is called every time the location changes
     private fun updateLocation(location: Location) {
-        if (lastLocation != null) {
-            // delete last location
-        }
 
-        // update location
-        lastLocation = location
     }
 
+    //Method to format the time
     fun formatElapsedTime(time: Long): String {
         val hours = time / 3600000
         val minutes = (time % 3600000) / 60000
@@ -83,6 +84,11 @@ class MainActivity2 : AppCompatActivity() {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
 
+
+    //Method to save the time to the database
+    fun saveTime(time: Long) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +110,8 @@ class MainActivity2 : AppCompatActivity() {
                         elapsedTime = System.currentTimeMillis() - startTime
                         val formattedTime = formatElapsedTime(elapsedTime)
                         textViewTime.text = formattedTime
+                        //
+
                     }
                     override fun onFinish() {}
                 }
@@ -142,6 +150,7 @@ class MainActivity2 : AppCompatActivity() {
         }
 
     }
+
 
     private fun Time(formattedDate: String, formattedTime: String): Any {
         TODO("Not yet implemented")
