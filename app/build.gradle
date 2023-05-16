@@ -43,6 +43,7 @@ dependencies {
 
     implementation files('libs/mssql-jdbc-12.2.0.jre11.jar')
 
+
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

@@ -47,7 +47,7 @@ class MainActivity2 : AppCompatActivity() {
 
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                9000,
+                30000,
                 0f,
                 locationListener!!
             )
@@ -73,7 +73,11 @@ class MainActivity2 : AppCompatActivity() {
     //Method to update the location in the database
     //This method is called every time the location changes
     private fun updateLocation(location: Location) {
+        val dbHelper = SqlServerConnectionHelper() // Instantiate your database helper class
 
+        val query = "UPDATE LocationTable SET latitude = ${location.latitude}, longitude = ${location.longitude} WHERE id = 1"
+
+        dbHelper.executeQuery(query) // Execute the UpdateLocation query
     }
 
     //Method to format the time
@@ -101,6 +105,8 @@ class MainActivity2 : AppCompatActivity() {
         switchTracker = findViewById(R.id.switchTracker)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+
+        //Process the switch change to track location and send location updates to the database
         switchTracker.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 startLocationUpdates()

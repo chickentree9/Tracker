@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.ResultSet
 import java.sql.SQLException
 
 class MainActivity : AppCompatActivity() {
@@ -31,14 +32,6 @@ class MainActivity : AppCompatActivity() {
             val username = usernameInput.text.toString()
             val password = passwordInput.text.toString()
 
-            // Check if the username and password are valid.
-            if (username.isEmpty() || password.isEmpty()) {
-                // Show an error message.
-                val message = "Please enter a username and password."
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             // Try to login the user.
             try {
                 // Create a new Thread object.
@@ -48,14 +41,16 @@ class MainActivity : AppCompatActivity() {
                     connection.connect("jdbc:sqlserver://trackerzq.database.windows.net:1433;database=tracker;user=uoeno@trackerzq;password=Unyuns_89;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;")
                     Log.d("MainActivity", "Connected to the database.")
 
-
                     // Execute a SQL query to check if the username and password are valid.
                     val sql = "SELECT * FROM Logins WHERE Username = '$username' AND Password = '$password'"
-                    val resultSet = connection.executeQuery(sql)
+                    Log.d("MainActivity", "Executing SQL query: $sql")
+                    val resultSet: ResultSet? = connection.executeQuery(sql)
+                    Log.d("MainActivity", "Executed SQL query.")
 
                     // If the user is found, start the MainActivity2.
-                    resultSet?.let {
-                        if (it.next()) {
+                    if (resultSet != null) {
+                        Log.d("MainActivity", "Checking if the user is found.")
+                        if (resultSet.next()) {
                             val intent = Intent(this, MainActivity2::class.java)
                             startActivity(intent)
                         } else {
@@ -65,8 +60,11 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-                    // Close the connection.
+
+              // Close the connection.
                     connection.close()
+                    Log.d("MainActivity", "Closed the connection.")
+
                 })
 
                 // Start the Thread object.
@@ -77,6 +75,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
-    }
+        }
     }
 }

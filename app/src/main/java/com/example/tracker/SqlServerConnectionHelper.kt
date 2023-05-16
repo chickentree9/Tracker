@@ -1,5 +1,6 @@
 package com.example.tracker
 
+import android.util.Log
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -19,15 +20,7 @@ class SqlServerConnectionHelper {
     }
 
     fun executeQuery(sql: String): ResultSet? {
-        try {
-            val statement = connection?.createStatement()
-            return statement?.executeQuery(sql)
-        } catch (e: SQLException) {
-            e.printStackTrace()
-        } finally {
-            connection?.close()
-        }
-        return null
+        return connection?.createStatement()?.executeQuery(sql)?.let { it }
     }
 
     fun close() {
